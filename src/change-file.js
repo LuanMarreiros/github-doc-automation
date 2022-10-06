@@ -5,14 +5,18 @@ const http = require('./github-request');
 
 function chooseNewTagNumber(commits, lastTag) {
     let newTagNumber = '';
+    let isFeature = false;
+    let isNovaFuncionalidade = false;
 
     if (lastTag && lastTag.split('.').length === 3) {
         commits.forEach(commit => {
             if (commit.toLowerCase().includes('feature')) {
+                isFeature = true;
                 newTagNumber = `${parseInt(lastTag.split('.')[0]) + 1}.0.0`
-            } else if (commit.toLowerCase().includes('adicionado')) {
+            } else if (commit.toLowerCase().includes('adicionado') && !isFeature) {
+                isNovaFuncionalidade = true;
                 newTagNumber = `${lastTag.split('.')[0]}.${parseInt(lastTag.split('.')[1]) + 1}.0`
-            } else {
+            } else if (!isNovaFuncionalidade) {
                 newTagNumber = `${lastTag.split('.')[0]}.${lastTag.split('.')[1]}.${parseInt(lastTag.split('.')[2]) + 1}`
             }
         });

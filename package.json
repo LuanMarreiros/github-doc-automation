@@ -1,7 +1,6 @@
 {
-  "name": "github-doc-automation",
+  "name": "@luanmarreiros/github-doc-automation",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,5 +11,15 @@
     "axios": "^1.0.0",
     "fs": "0.0.1-security",
     "node-fetch": "^3.2.10"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuanMarreiros/github-doc-automation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LuanMarreiros/github-doc-automation/issues"
+  },
+  "homepage": "https://github.com/LuanMarreiros/github-doc-automation#readme",
+  "description": ""
 }
