@@ -21,7 +21,7 @@ function compare(branch, lastTag = undefined, sha) {
 
             listCommits(data.data.commits, branch, lastTag, sha)
         }).catch(err => {
-            throw Error(`Commits not found betweem branch ${branch} and tag ${lastTag}`)
+            throw Error(`Commits not found between branch ${branch} and tag ${lastTag}`)
         })
     } else {
         get(`/commits`).then(data => {
