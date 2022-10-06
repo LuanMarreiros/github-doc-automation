@@ -31,9 +31,7 @@ function validateArgs(token, owner, repo) {
     }
 
     setConfigs(token, repo, owner);
-    // searchBranches();
-
-    console.log(process.cwd())
+    searchBranches();
 }
 
 findArgs();

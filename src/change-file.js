@@ -1,4 +1,4 @@
-import {post} from './github-request.js';
+import { post } from './github-request.js';
 import fs from 'fs';
 
 function chooseNewTagNumber(commits, lastTag) {
@@ -122,11 +122,17 @@ function createMessageToTag(commits, branch, lastTag, actualFile) {
 }
 
 function editChangeLog(commits, branch, lastTag, sha) {
-    const actualFile = fs.readFileSync('./CHANGELOG.MD', 'utf-8');
+    if (!fs.existsSync(process.cwd() + '/CHANGELOG.MD')) {
+        fs.writeFileSync(process.cwd() + '/CHANGELOG.MD', '', function (err) {
+            if (err) throw err;
+        })
+    }
+
+    const actualFile = fs.readFileSync(process.cwd() + '/CHANGELOG.MD', 'utf-8');
     const messageToSave = createMessageToChangeLog(commits, branch, lastTag, actualFile);
     const messageToTag = createMessageToTag(commits, branch, lastTag, actualFile);
 
-    fs.writeFile('CHANGELOG.MD', messageToSave.complete, function (err) {
+    fs.writeFile(process.cwd() + '/CHANGELOG.MD', messageToSave.complete, function (err) {
         if (err) throw err;
 
         createTag(messageToTag, sha, branch);
