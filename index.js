@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const initialScript = require('./src/search-branches');
 const http = require('./src/github-request');
 
