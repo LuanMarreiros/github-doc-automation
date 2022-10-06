@@ -21,7 +21,7 @@ function filterBranches(branches) {
     });
 
     if (!branchName) {
-        throw new Error("Branch main or master do not found.");
+        throw new Error("Branch main or master not found.");
     }
 
     return `${branchName}-${branchSHA}`;
@@ -36,7 +36,7 @@ function searchTags(branch) {
             compare(branch.split('-')[0], undefined, branch.split('-')[1]);
         }
     }).catch(err => {
-        throw Error(`Rota: /tags, status: ${err?.response?.status}`)
+        throw Error(`Tags not found.`)
     })
 }
 
@@ -44,7 +44,7 @@ function searchBranches() {
     get('/branches').then(data => {
         searchTags(filterBranches(data.data));
     }).catch(err => {
-        throw Error(`Rota: /branches, status: ${err?.response?.status}`)
+        throw Error(`Branches not found.`)
     })
 }
 
