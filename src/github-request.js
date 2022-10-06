@@ -1,10 +1,10 @@
+import axios from 'axios';
+
 let token = '';
 let repo = '';
 let owner = '';
 
 function get(url) {
-    const axios = require('axios');
-
     return axios.get(`https://api.github.com/repos/${owner}/${repo}` + url, {
         headers: {
             "Authorization": "Bearer " + token,
@@ -14,8 +14,6 @@ function get(url) {
 }
 
 function post(url, data) {
-    const axios = require('axios');
-
     return axios.post(`https://api.github.com/repos/${owner}/${repo}` + url, data, {
         headers: {
             "Authorization": "Bearer " + token,
@@ -30,4 +28,4 @@ function setConfigs(_token, _repo, _owner){
     owner = _owner;
 }
 
-module.exports = { get, post, setConfigs }
+export {get, post, setConfigs};

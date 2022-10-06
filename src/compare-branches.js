@@ -1,6 +1,6 @@
-const axios = require('axios');
-const http = require('./github-request');
-const changeFile = require('./change-file');
+import {get} from './github-request.js';
+import editChangeLog from './change-file.js';
+
 
 function listCommits(commits, branch, lastTag, sha) {
     const list = [];
@@ -9,31 +9,31 @@ function listCommits(commits, branch, lastTag, sha) {
         list.push(commit.commit.message);
     });
 
-    changeFile.editChangeLog(list, branch, lastTag, sha)
+    editChangeLog(list, branch, lastTag, sha)
 }
 
 function compare(branch, lastTag = undefined, sha) {
     if (lastTag) {
-        http.get(`/compare/${lastTag}...${branch}`).then(data => {
+        get(`/compare/${lastTag}...${branch}`).then(data => {
             if (data.data.commits && data.data.commits.length === 0) {
                 throw Error(`Commits not found.`)
             }
 
             listCommits(data.data.commits, branch, lastTag, sha)
         }).catch(err => {
-            throw Error(`Rota: /compare/${lastTag}...${branch}, status: ${err?.response?.status}`)
+            throw Error('Rota: /compare/${lastTag}...${branch}')
         })
-    }else{
-        http.get(`/commits`).then(data => {
+    } else {
+        get(`/commits`).then(data => {
             if (data.data && data.data.length === 0) {
                 throw Error(`Commits not found.`)
             }
 
             listCommits(data.data, branch, lastTag, sha)
         }).catch(err => {
-            throw Error(`Rota: /compare/${lastTag}...${branch}, status: ${err?.response?.status}`)
+            throw Error('Rota: /commits')
         })
     }
 }
 
-module.exports = { compare }
+export default compare;

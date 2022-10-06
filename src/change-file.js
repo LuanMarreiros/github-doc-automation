@@ -1,7 +1,5 @@
-const { type } = require('os');
-const path = require('path');
-const http = require('./github-request');
-
+import {post} from './github-request.js';
+import fs from 'fs';
 
 function chooseNewTagNumber(commits, lastTag) {
     let newTagNumber = '';
@@ -124,7 +122,6 @@ function createMessageToTag(commits, branch, lastTag, actualFile) {
 }
 
 function editChangeLog(commits, branch, lastTag, sha) {
-    const fs = require('fs');
     const actualFile = fs.readFileSync('./CHANGELOG.MD', 'utf-8');
     const messageToSave = createMessageToChangeLog(commits, branch, lastTag, actualFile);
     const messageToTag = createMessageToTag(commits, branch, lastTag, actualFile);
@@ -151,7 +148,7 @@ function createTag(messageToSave, sha, branch) {
         }
     }
 
-    http.post(`/git/tags`, dataTag).then(data => {
+    post(`/git/tags`, dataTag).then(data => {
         confirmTag(data.data.sha, messageToSave.newTag, branch, messageToSave.newMessageComplete)
     }).catch(err => {
         throw Error(`Rota: /git/tags, status: ${err?.response?.status}`)
@@ -163,7 +160,7 @@ function confirmTag(sha, tag, branch, message) {
         ref: "refs/tags/" + tag,
         sha: sha
     }
-    http.post('/git/refs', dataRef).then(data => {
+    post('/git/refs', dataRef).then(data => {
         createRelease(tag, branch, message);
     }).catch(err => {
         throw Error(`Rota: /git/refs, status: ${err?.response?.status}`)
@@ -182,11 +179,11 @@ function createRelease(tag, branch, message) {
         prerelease: false,
         generate_release_notes: false
     }
-    http.post('/releases', dataRelease).then(data => {
+    post('/releases', dataRelease).then(data => {
         console.log("Tag and Release created with name: " + tag)
     }).catch(err => {
         throw Error(`Rota: /git/refs, status: ${err?.response?.status}`)
     })
 }
 
-module.exports = { editChangeLog }
+export default editChangeLog;

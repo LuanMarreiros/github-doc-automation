@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const initialScript = require('./src/search-branches');
-const http = require('./src/github-request');
+import searchBranches from './src/search-branches.js';
+import {setConfigs} from './src/github-request.js';
 
 function findArgs() {
     let token = undefined;
@@ -30,8 +30,8 @@ function validateArgs(token, owner, repo) {
         throw Error('Option --repo is required.')
     }
 
-    http.setConfigs(token, repo, owner);
-    initialScript.searchBranches();
+    setConfigs(token, repo, owner);
+    searchBranches();
 }
 
 findArgs();
